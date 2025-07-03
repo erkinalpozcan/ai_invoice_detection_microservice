@@ -1,0 +1,20 @@
+version: "3.8"
+
+services:
+  ocr_service:
+    build: ./ocr
+    ports: ["8001:8000"]
+
+  yolo_service:
+    build: ./yolo
+    ports: ["8002:8000"]
+
+  main_service:
+    build: ./main
+    ports: ["8003:8000"]
+    depends_on:
+      - ocr_service
+      - yolo_service
+    environment:             # ⬅️ URL'leri buradan geçir; ister geçirme, default değerler zaten doğru
+      YOLO_URL: "http://yolo_service:8000/predict"
+      OCR_URL:  "http://ocr_service:8000/ocr"
