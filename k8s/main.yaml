@@ -30,7 +30,7 @@ kind: Service
 metadata:
   name: main-service
 spec:
-  type: LoadBalancer       # Dış erişim için load balancer
+  type: LoadBalancer       
   selector:
     app: main
   ports:
