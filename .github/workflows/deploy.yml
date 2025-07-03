@@ -1,25 +1,23 @@
 name: Deploy to Azure AKS (Manual)
 
 on:
-  workflow_dispatch: 
+  workflow_dispatch:
 
 env:
   ACR_LOGIN_SERVER: ${{ secrets.AZURE_ACR_NAME }}.azurecr.io
-  ACR_USERNAME: ${{ secrets.ACR_SECRET_USERNAME }}
-  ACR_PASSWORD: ${{ secrets.ACR_SECRET_PASSWORD }}
 
 jobs:
   build-and-deploy:
-    runs-on: ubuntu-latest 
+    runs-on: ubuntu-latest
 
     steps:
     - name: Checkout repository
-      uses: actions/checkout@v4 
+      uses: actions/checkout@v4
 
     - name: Azure Login
       uses: azure/login@v1
       with:
-        creds: ${{ secrets.AZURE_CREDENTIALS }} 
+        creds: ${{ secrets.AZURE_CREDENTIALS }}
 
     - name: Install kubectl
       uses: azure/setup-kubectl@v3
@@ -32,10 +30,12 @@ jobs:
         kubectl get secret acr-secret -n default || \
         kubectl create secret docker-registry acr-secret \
           --docker-server=${{ env.ACR_LOGIN_SERVER }} \
-          --docker-username=${{ env.ACR_USERNAME }} \
-          --docker-password=${{ env.ACR_PASSWORD }} \
-          --docker-email=${{ secrets.ACR_SECRET_EMAIL }}
-      
+          --docker-username=${{ secrets.ACR_SECRET_USERNAME }} \
+          --docker-password=${{ secrets.ACR_SECRET_PASSWORD }} \
+          --docker-email=no-reply@github.com
+
+    - name: Docker Login to ACR for Push
+      run: echo "${{ secrets.ACR_SECRET_PASSWORD }}" | docker login ${{ env.ACR_LOGIN_SERVER }} --username ${{ secrets.ACR_SECRET_USERNAME }} --password-stdin
 
     - name: Build and Push Yolo Service Image
       run: |
@@ -57,7 +57,6 @@ jobs:
         kubectl apply -f kubernetes/ocr.yaml
         kubectl apply -f kubernetes/yolo.yaml
         kubectl apply -f kubernetes/main.yaml
-      
 
     - name: Verify Deployment
       run: |
