@@ -1,6 +1,6 @@
 # 🚀 AI-Powered Invoice Processing Microservice (YOLO & OCR)
 
-Bu proje, faturalardaki önemli bilgileri otomatik olarak algılamak ve metinleri çıkarmak için Gelişmiş Bilgisayar Görüşü (Computer Vision) tekniklerini ve Mikroservis Mimarisini bir araya getiren kapsamlı bir çözümdür. Proje, modern bulut teknolojileri (Azure Kubernetes Service, Azure Container Registry) ve sürekli entegrasyon/teslimat (CI/CD) pipeline'ları kullanılarak ölçeklenebilirlik, esneklik ve otomatik dağıtım yetenekleri ile tasarlanmıştır.
+Bu proje, faturalardaki önemli bilgileri otomatik olarak algılamak ve metinleri çıkarmak için Gelişmiş Bilgisayar Görüşü (Computer Vision) tekniklerini ve Mikroservis Mimarisini bir araya getiren kapsamlı bir çözümdür. Proje, modern bulut teknolojileri (*Azure Kubernetes Service*, *Azure Container Registry*) ve sürekli entegrasyon/teslimat (*CI/CD*) pipeline'ları kullanılarak ölçeklenebilirlik, esneklik ve otomatik dağıtım yetenekleri ile tasarlanmıştır.
 
 ## ✨ Temel Özellikler
 
