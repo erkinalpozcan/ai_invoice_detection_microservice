@@ -54,9 +54,9 @@ jobs:
 
     - name: Deploy to AKS
       run: |
-        kubectl apply -f kubernetes/ocr.yaml
-        kubectl apply -f kubernetes/yolo.yaml
-        kubectl apply -f kubernetes/main.yaml
+        kubectl apply -f k8s/ocr.yaml
+        kubectl apply -f k8s/yolo.yaml
+        kubectl apply -f k8s/main.yaml
 
     - name: Verify Deployment
       run: |
