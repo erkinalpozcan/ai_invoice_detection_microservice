@@ -133,22 +133,12 @@ Uygulamanız başarıyla dağıtıldıktan sonra, ana API'ye ve Swagger arayüz�
 * **Swagger UI:** `http://[YOUR_MAIN_SERVICE_EXTERNAL_IP]:8003/docs`
     * `[YOUR_MAIN_SERVICE_EXTERNAL_IP]` yerine `kubectl get services` çıktısındaki IP adresini yazın.
 
-## 🤝 Katkıda Bulunma
-
-Projenin geliştirilmesine katkıda bulunmak isteyenler için:
-
-1.  Depoyu fork edin.
-2.  Yeni bir branch oluşturun (`git checkout -b feature/AmazingFeature`).
-3.  Değişikliklerinizi yapın.
-4.  Değişikliklerinizi commit'leyin (`git commit -m 'Add some AmazingFeature'`).
-5.  Branch'inize push edin (`git push origin feature/AmazingFeature`).
-6.  Bir Pull Request (Çekme İsteği) açın.
 
 ## 📧 İletişim
 
-* **[Adınız Soyadınız]** - [e-posta adresiniz]
-* **LinkedIn:** [LinkedIn profilinizin URL'si]
-* **GitHub:** [GitHub profilinizin URL'si]
+* **Erkinalp Özcan** - erkinalpozcan@gmail.com
+* **LinkedIn:** https://www.linkedin.com/in/erkinalpozcan/
+* **GitHub:** https://github.com/erkinalpozcan
 
 Projemi incelediğiniz için teşekkür ederim!
 
