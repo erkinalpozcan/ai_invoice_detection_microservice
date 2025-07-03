@@ -1,0 +1,65 @@
+name: Deploy to Azure AKS (Manual)
+
+on:
+  workflow_dispatch: 
+
+env:
+  ACR_LOGIN_SERVER: ${{ secrets.AZURE_ACR_NAME }}.azurecr.io
+  ACR_USERNAME: ${{ secrets.ACR_SECRET_USERNAME }}
+  ACR_PASSWORD: ${{ secrets.ACR_SECRET_PASSWORD }}
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest 
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4 
+
+    - name: Azure Login
+      uses: azure/login@v1
+      with:
+        creds: ${{ secrets.AZURE_CREDENTIALS }} 
+
+    - name: Install kubectl
+      uses: azure/setup-kubectl@v3
+
+    - name: Get AKS Credentials
+      run: az aks get-credentials --resource-group ${{ secrets.AZURE_RESOURCE_GROUP }} --name ${{ secrets.AZURE_AKS_NAME }} --overwrite-existing
+
+    - name: Create ACR ImagePullSecret if not exists
+      run: |
+        kubectl get secret acr-secret -n default || \
+        kubectl create secret docker-registry acr-secret \
+          --docker-server=${{ env.ACR_LOGIN_SERVER }} \
+          --docker-username=${{ env.ACR_USERNAME }} \
+          --docker-password=${{ env.ACR_PASSWORD }} \
+          --docker-email=${{ secrets.ACR_SECRET_EMAIL }}
+      
+
+    - name: Build and Push Yolo Service Image
+      run: |
+        docker build -t faturaacr.azurecr.io/faturayolo-yolo_service:app ./yolo
+        docker push faturaacr.azurecr.io/faturayolo-yolo_service:app
+
+    - name: Build and Push OCR Service Image
+      run: |
+        docker build -t faturaacr.azurecr.io/faturayolo-ocr_service:app ./ocr
+        docker push faturaacr.azurecr.io/faturayolo-ocr_service:app
+
+    - name: Build and Push Main Service Image
+      run: |
+        docker build -t faturaacr.azurecr.io/faturayolo-main_service:app ./main
+        docker push faturaacr.azurecr.io/faturayolo-main_service:app
+
+    - name: Deploy to AKS
+      run: |
+        kubectl apply -f kubernetes/ocr.yaml
+        kubectl apply -f kubernetes/yolo.yaml
+        kubectl apply -f kubernetes/main.yaml
+      
+
+    - name: Verify Deployment
+      run: |
+        kubectl get pods
+        kubectl get services
