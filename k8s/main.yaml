@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: main-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: main
+  template:
+    metadata:
+      labels:
+        app: main
+    spec:
+      containers:
+        - name: main-container
+          image: faturaacr.azurecr.io/faturayolo-main_service:app
+          ports:
+            - containerPort: 8000
+          env:
+            - name: YOLO_URL
+              value: "http://yolo-service:8002/predict"
+            - name: OCR_URL
+              value: "http://ocr-service:8001/ocr"
+      imagePullSecrets:
+        - name: acr-secret
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: main-service
+spec:
+  type: LoadBalancer       # Dış erişim için load balancer
+  selector:
+    app: main
+  ports:
+    - protocol: TCP
+      port: 8003           # Dış dünya için erişim portu
+      targetPort: 8000     # Container portu
